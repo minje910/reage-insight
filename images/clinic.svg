@@ -1,0 +1,46 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="cvNavy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1b3a"/><stop offset="1" stop-color="#15294f"/>
+    </linearGradient>
+    <linearGradient id="cGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#d4a017"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#cvNavy)"/>
+  <text x="40" y="72" font-size="15" font-weight="700" fill="#fcd34d" letter-spacing="2">PREMIUM LONGEVITY CLINIC · VIP</text>
+  <text x="40" y="128" font-size="44" font-weight="800" fill="#ffffff">프리미엄 장수 클리닉</text>
+  <text x="40" y="162" font-size="16" fill="#c7d6ee">1:1 맞춤 안티에이징 토탈 프로그램</text>
+
+  <!-- gold building -->
+  <g transform="translate(80,240)">
+    <path d="M100 0 L200 60 L0 60 Z" fill="url(#cGold)"/>
+    <rect x="15" y="60" width="170" height="150" fill="#1b3157" stroke="url(#cGold)" stroke-width="3"/>
+    <g fill="url(#cGold)"><rect x="85" y="90" width="30" height="90"/><rect x="70" y="120" width="60" height="30"/></g>
+    <g fill="#0b1b3a"><rect x="30" y="90" width="24" height="30"/><rect x="146" y="90" width="24" height="30"/><rect x="30" y="140" width="24" height="30"/><rect x="146" y="140" width="24" height="30"/></g>
+  </g>
+
+  <!-- biomarker dashboard -->
+  <g transform="translate(360,225)">
+    <rect width="400" height="250" rx="16" fill="#10203f" stroke="#2a4373" stroke-width="2"/>
+    <text x="20" y="34" font-size="15" font-weight="800" fill="#fcd34d">생물학적 나이 리포트</text>
+    <text x="380" y="34" text-anchor="end" font-size="13" fill="#93c5fd">-7.2세 ▼</text>
+    <!-- rings -->
+    <g transform="translate(70,120)">
+      <circle r="42" fill="none" stroke="#1e3a6b" stroke-width="10"/>
+      <circle r="42" fill="none" stroke="#5eead4" stroke-width="10" stroke-dasharray="210 264" stroke-linecap="round" transform="rotate(-90)"/>
+      <text y="6" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">48세</text>
+    </g>
+    <text x="70" y="200" text-anchor="middle" font-size="12" fill="#93c5fd">실제 55세</text>
+    <!-- bars -->
+    <g transform="translate(160,80)">
+      <text font-size="12" fill="#c7d6ee">혈액 바이오마커</text>
+      <rect y="10" width="200" height="10" rx="5" fill="#1e3a6b"/><rect y="10" width="150" height="10" rx="5" fill="#5eead4"/>
+      <text y="52" font-size="12" fill="#c7d6ee">유전자 · 후성유전</text>
+      <rect y="62" width="200" height="10" rx="5" fill="#1e3a6b"/><rect y="62" width="170" height="10" rx="5" fill="#60a5fa"/>
+      <text y="104" font-size="12" fill="#c7d6ee">장내 미생물</text>
+      <rect y="114" width="200" height="10" rx="5" fill="#1e3a6b"/><rect y="114" width="120" height="10" rx="5" fill="#fbbf24"/>
+    </g>
+  </g>
+  <text x="40" y="575" font-size="13" font-weight="700" fill="#fcd34d">RE:AGE INSIGHT · 혈액·유전자·장내미생물 정밀 분석 노화 역전 로드맵</text>
+</svg>

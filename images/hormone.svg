@@ -1,0 +1,33 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="hoBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a1233"/><stop offset="1" stop-color="#831843"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#hoBg)"/>
+  <text x="40" y="72" font-size="15" font-weight="700" fill="#f9a8d4" letter-spacing="2">HORMONE OPTIMIZATION</text>
+  <text x="40" y="128" font-size="44" font-weight="800" fill="#ffffff">호르몬 최적화 요법</text>
+  <text x="40" y="162" font-size="16" fill="#fbcfe8">2030의 활력 밸런스로 재조정</text>
+
+  <!-- declining curve with restore -->
+  <g transform="translate(70,230)">
+    <line x1="0" y1="0" x2="0" y2="230" stroke="#c084a8" stroke-width="2"/>
+    <line x1="0" y1="230" x2="640" y2="230" stroke="#c084a8" stroke-width="2"/>
+    <text x="-10" y="0" text-anchor="end" font-size="11" fill="#fbcfe8" transform="rotate(-90,-10,0)"></text>
+    <!-- natural decline -->
+    <path d="M20 40 C 200 60 400 180 620 210" fill="none" stroke="#be6a97" stroke-width="4" stroke-dasharray="8 6"/>
+    <text x="470" y="200" font-size="12" fill="#e5a9c8">자연 감소</text>
+    <!-- optimized -->
+    <path d="M20 40 C 220 55 420 70 620 75" fill="none" stroke="#5eead4" stroke-width="5"/>
+    <text x="470" y="60" font-size="13" font-weight="800" fill="#5eead4">최적화 유지</text>
+    <text x="10" y="30" font-size="11" fill="#fbcfe8">호르몬 수치</text>
+    <text x="560" y="255" font-size="11" fill="#fbcfe8">나이 →</text>
+    <!-- hormone icons -->
+    <g fill="#fbcfe8" font-size="11" text-anchor="middle">
+      <circle cx="120" cy="130" r="18" fill="rgba(255,255,255,0.12)" stroke="#f9a8d4" stroke-width="2"/><text x="120" y="134">T</text>
+      <circle cx="330" cy="130" r="18" fill="rgba(255,255,255,0.12)" stroke="#f9a8d4" stroke-width="2"/><text x="330" y="134">E</text>
+      <circle cx="520" cy="130" r="18" fill="rgba(255,255,255,0.12)" stroke="#f9a8d4" stroke-width="2"/><text x="520" y="134">GH</text>
+    </g>
+  </g>
+  <text x="40" y="575" font-size="13" font-weight="700" fill="#f9a8d4">RE:AGE INSIGHT · 성호르몬·갑상선·성장호르몬 정밀 검사 후 안전 조절</text>
+</svg>

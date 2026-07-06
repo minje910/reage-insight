@@ -1,0 +1,33 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <rect width="800" height="600" fill="#fdf6e3"/>
+  <rect x="40" y="40" width="720" height="520" rx="8" fill="#ffffff" stroke="#e7dcc0" stroke-width="2"/>
+  <!-- book cover editorial -->
+  <text x="400" y="120" text-anchor="middle" font-size="42" font-weight="800" fill="#1f2937" letter-spacing="4">단식 모방 다이어트</text>
+  <line x1="150" y1="140" x2="650" y2="140" stroke="#d6c48a" stroke-width="2"/>
+  <text x="400" y="172" text-anchor="middle" font-size="15" fill="#6b7280">몸을 착각하게 하는 건강한 식사법</text>
+
+  <!-- plate + clock -->
+  <g transform="translate(400,330)">
+    <circle r="120" fill="#faf3dd" stroke="#e0d097" stroke-width="4"/>
+    <circle r="88" fill="#ffffff" stroke="#eadfb8" stroke-width="2"/>
+    <!-- clock hands (fasting window) -->
+    <g stroke="#b45309" stroke-width="6" stroke-linecap="round">
+      <line x1="0" y1="0" x2="0" y2="-60"/>
+      <line x1="0" y1="0" x2="46" y2="26"/>
+    </g>
+    <circle r="8" fill="#b45309"/>
+    <!-- tick marks -->
+    <g stroke="#a16207" stroke-width="3">
+      <line x1="0" y1="-82" x2="0" y2="-72"/><line x1="82" y1="0" x2="72" y2="0"/>
+      <line x1="0" y1="82" x2="0" y2="72"/><line x1="-82" y1="0" x2="-72" y2="0"/>
+    </g>
+    <!-- fork & knife -->
+    <g stroke="#9a7b1f" stroke-width="5" stroke-linecap="round">
+      <line x1="-160" y1="-30" x2="-160" y2="50"/><line x1="-172" y1="-30" x2="-172" y2="0"/><line x1="-148" y1="-30" x2="-148" y2="0"/>
+      <line x1="160" y1="-30" x2="160" y2="50"/><path d="M155 -30 q10 25 5 40" fill="none"/>
+    </g>
+  </g>
+
+  <text x="400" y="500" text-anchor="middle" font-size="15" font-weight="700" fill="#92400e">The Longevity Diet — 세포 자가포식(오토파지) 스위치를 켜다</text>
+  <text x="400" y="535" text-anchor="middle" font-size="13" font-weight="700" fill="#a16207">RE:AGE INSIGHT · 간헐적 단식 · 단식모방식(FMD)</text>
+</svg>

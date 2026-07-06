@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>RE:AGE — 역노화 큐레이터</title>
+  <link rel="icon" href="images/logo.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+
+    <!-- ===== 온보딩 (가입) ===== -->
+    <div class="overlay hidden" id="overlay">
+      <div class="modal">
+        <div class="logo-row">
+          <img src="images/logo.svg" alt="RE:AGE">
+          <h2>RE:AGE 시작하기</h2>
+          <p class="lead">몇 가지만 알려주시면<br>나이와 라이프스타일에 딱 맞는<br><b>역노화 기술</b>을 카드뉴스로 추천해 드려요.</p>
+        </div>
+
+        <div class="field">
+          <label for="f-name">이름</label>
+          <input id="f-name" type="text" placeholder="예: 이동제" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="f-age">나이</label>
+          <input id="f-age" type="number" min="10" max="120" placeholder="예: 47" inputmode="numeric">
+        </div>
+
+        <div class="field">
+          <label>경제적 여유</label>
+          <div class="opts">
+            <div class="opt" data-wealth="low">
+              <span class="em">🌱</span>
+              <span class="t">알뜰형</span>
+              <span class="d">가성비 우선</span>
+            </div>
+            <div class="opt" data-wealth="mid">
+              <span class="em">⚖️</span>
+              <span class="t">표준형</span>
+              <span class="d">합리적 투자</span>
+            </div>
+            <div class="opt" data-wealth="high">
+              <span class="em">👑</span>
+              <span class="t">프리미엄</span>
+              <span class="d">최고급 케어</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="err" id="f-err">이름 · 나이(10~120) · 경제적 여유를 모두 입력해 주세요.</div>
+        <button class="go" id="f-go" disabled>내 맞춤 추천 받기 →</button>
+        <p class="note">🔒 입력 정보는 이 브라우저에만 저장되며 외부로 전송되지 않습니다.</p>
+      </div>
+    </div>
+
+    <!-- ===== 메인 앱 ===== -->
+    <div id="app" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="topbar">
+        <img src="images/logo.svg" alt="">
+        <div class="brand">RE:<span>AGE</span></div>
+        <div class="profile-chip" id="profile-chip"></div>
+      </div>
+
+      <div class="screen">
+        <!-- 검색 히어로 -->
+        <div class="search-hero">
+          <h2>오늘의 젊음을<br>검색해 보세요</h2>
+          <p>검색할수록 🍪 쿠키가 쌓이고 추천이 정교해집니다</p>
+          <div class="search-box">
+            <input id="search-input" type="text" placeholder="관심사를 검색… 예) 무릎 관절, NMN, 단식" autocomplete="off">
+            <button id="search-btn">검색하기</button>
+          </div>
+          <div class="chips" id="chips"></div>
+        </div>
+
+        <!-- 쿠키 상태 -->
+        <div class="cookie-bar" id="cookie-bar"></div>
+
+        <!-- 검색 데이터(트렌드) 스트립 -->
+        <div class="trend-strip" id="trend-strip" style="display:none"></div>
+
+        <!-- 인사이트 섹션 (맞춤 1개) -->
+        <div class="sec-title">
+          <h3>오늘의 맞춤 인사이트</h3>
+          <small>검색 쿠키 · 검색 데이터 기반</small>
+        </div>
+        <div id="persona-tag" class="persona-tag"></div>
+
+        <div class="insight-wrap" id="insight"></div>
+
+        <!-- Gmail 전송 -->
+        <div class="email-box">
+          <div class="email-title">📧 이 인사이트를 메일로 받기</div>
+          <div class="email-row">
+            <input id="email-to" type="email" placeholder="받는 사람 이메일" autocomplete="off">
+            <button id="email-btn">📧 메일로 받기</button>
+          </div>
+          <p class="email-note">Gmail API(SMTP)로 전송됩니다. 서버 미실행 시 데모 모드로 동작합니다.</p>
+        </div>
+
+        <div class="footer">
+          <button id="reset-btn">가입정보·검색쿠키 초기화</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

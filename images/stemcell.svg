@@ -1,0 +1,45 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <radialGradient id="scCell" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#dbeafe"/><stop offset="1" stop-color="#60a5fa"/>
+    </radialGradient>
+    <linearGradient id="scBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0e1e3f"/><stop offset="1" stop-color="#17306a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#scBg)"/>
+  <text x="40" y="72" font-size="15" font-weight="700" fill="#93c5fd" letter-spacing="2">REGENERATIVE MEDICINE</text>
+  <text x="40" y="128" font-size="44" font-weight="800" fill="#ffffff">줄기세포 재생 치료</text>
+  <text x="40" y="162" font-size="16" fill="#c7d6ee">손상된 조직을 근본부터 되돌리다</text>
+
+  <!-- differentiation tree -->
+  <g stroke="#3b6bd0" stroke-width="3" fill="none" opacity="0.8">
+    <path d="M200 300 L120 430"/><path d="M200 300 L200 440"/><path d="M200 300 L290 430"/>
+  </g>
+  <g>
+    <circle cx="200" cy="290" r="46" fill="url(#scCell)" stroke="#bfdbfe" stroke-width="3"/>
+    <circle cx="200" cy="290" r="16" fill="#1d4ed8"/>
+    <text x="200" y="230" text-anchor="middle" font-size="13" font-weight="800" fill="#bfdbfe">줄기세포</text>
+  </g>
+  <!-- differentiated -->
+  <g font-size="11" fill="#e0edff" text-anchor="middle">
+    <circle cx="120" cy="455" r="26" fill="#2563eb"/><text x="120" y="500">연골</text>
+    <circle cx="200" cy="465" r="26" fill="#3b82f6"/><text x="200" y="510">피부</text>
+    <circle cx="290" cy="455" r="26" fill="#60a5fa"/><text x="290" y="500">모발</text>
+  </g>
+
+  <!-- regeneration arrow to joint -->
+  <g transform="translate(470,250)">
+    <text x="80" y="0" text-anchor="middle" font-size="14" font-weight="800" fill="#5eead4">조직 재생 촉진</text>
+    <path d="M20 20 Q80 -10 140 20" fill="none" stroke="#5eead4" stroke-width="3" marker-end="url(#sa)"/>
+    <defs><marker id="sa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6z" fill="#5eead4"/></marker></defs>
+    <!-- knee joint -->
+    <g transform="translate(50,60)">
+      <rect x="10" y="0" width="30" height="70" rx="14" fill="#93c5fd"/>
+      <rect x="10" y="110" width="30" height="70" rx="14" fill="#93c5fd"/>
+      <ellipse cx="25" cy="92" rx="34" ry="26" fill="#5eead4"/>
+      <text x="25" y="97" text-anchor="middle" font-size="11" font-weight="800" fill="#0e1e3f">관절</text>
+    </g>
+  </g>
+  <text x="40" y="575" font-size="13" font-weight="700" fill="#5eead4">RE:AGE INSIGHT · 자가/제대혈 줄기세포 · 입원 없는 당일 시술</text>
+</svg>

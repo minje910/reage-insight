@@ -1,0 +1,47 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Malgun Gothic',sans-serif">
+  <defs>
+    <linearGradient id="seBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b1408"/><stop offset="1" stop-color="#7c2d12"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#seBg)"/>
+  <text x="40" y="72" font-size="15" font-weight="700" fill="#fdba74" letter-spacing="2">SENOLYTICS</text>
+  <text x="40" y="128" font-size="44" font-weight="800" fill="#ffffff">노화세포 제거</text>
+  <text x="40" y="162" font-size="16" fill="#fed7aa">몸속 '좀비세포'를 표적 청소</text>
+
+  <!-- before -->
+  <g transform="translate(90,240)">
+    <text x="130" y="-10" text-anchor="middle" font-size="14" font-weight="800" fill="#fecaca">Before</text>
+    <rect width="260" height="230" rx="18" fill="rgba(0,0,0,0.25)"/>
+    <g>
+      <circle cx="70" cy="70" r="30" fill="#16a34a" opacity="0.85"/>
+      <circle cx="185" cy="60" r="30" fill="#16a34a" opacity="0.85"/>
+      <circle cx="120" cy="150" r="30" fill="#16a34a" opacity="0.85"/>
+      <!-- zombie cells -->
+      <g>
+        <circle cx="185" cy="150" r="34" fill="#9a3412" stroke="#f97316" stroke-width="3" stroke-dasharray="8 6"/>
+        <circle cx="180" cy="145" r="4" fill="#fdba74"/><circle cx="195" cy="155" r="4" fill="#fdba74"/>
+        <path d="M172 160 q13 10 26 0" fill="none" stroke="#fdba74" stroke-width="3"/>
+        <circle cx="55" cy="150" r="28" fill="#9a3412" stroke="#f97316" stroke-width="3" stroke-dasharray="8 6"/>
+      </g>
+    </g>
+    <text x="130" y="220" text-anchor="middle" font-size="12" fill="#fecaca">노화세포 축적 → 만성 염증</text>
+  </g>
+
+  <text x="400" y="360" font-size="36" fill="#fdba74">→</text>
+
+  <!-- after -->
+  <g transform="translate(450,240)">
+    <text x="130" y="-10" text-anchor="middle" font-size="14" font-weight="800" fill="#bbf7d0">After</text>
+    <rect width="260" height="230" rx="18" fill="rgba(0,0,0,0.25)"/>
+    <g>
+      <circle cx="70" cy="70" r="30" fill="#22c55e"/>
+      <circle cx="185" cy="60" r="30" fill="#22c55e"/>
+      <circle cx="120" cy="150" r="30" fill="#22c55e"/>
+      <circle cx="185" cy="150" r="30" fill="#22c55e"/>
+      <circle cx="55" cy="150" r="30" fill="#22c55e"/>
+    </g>
+    <text x="130" y="220" text-anchor="middle" font-size="12" fill="#bbf7d0">건강한 조직 · 염증 감소</text>
+  </g>
+  <text x="40" y="575" font-size="13" font-weight="700" fill="#fdba74">RE:AGE INSIGHT · 노화세포 선택 제거 · 분기 1회 프로토콜</text>
+</svg>

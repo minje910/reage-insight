@@ -1,0 +1,15 @@
+# 자격증명 · 발송 기록 (절대 커밋 금지)
+config.py
+outbox.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
