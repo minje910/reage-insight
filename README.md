@@ -9,7 +9,8 @@
 |---|---|
 | 가입 온보딩 | 첫 방문 시 **이름·나이·경제적 여유**(알뜰/표준/프리미엄) 입력 → 페르소나 자동 분류 |
 | 검색 쿠키 | 메인 **검색하기**로 검색 시 키워드가 `localStorage`에 누적(쿠키 시뮬레이션) |
-| 검색 데이터 API | `/api/trends` — 네이버 데이터랩 검색어 트렌드로 실시간 급상승 키워드 반영 |
+| 검색 데이터 API | `/api/trends` — **Google 트렌드(pytrends) + 네이버 데이터랩**을 병합해 실시간 급상승 키워드 반영 |
+| Google 통계 → 쿠키 연계 | 검색 시 Google 급상승/연관 키워드를 **검색 쿠키에 자동 주입**(🔎 표시), 추천에 반영 |
 | 맞춤 인사이트 1개 | 페르소나 + 경제력 + 검색쿠키 + 트렌드 종합 점수 최상위 **1개 카드**만 노출 |
 | Gmail 전송 | `/api/send` — 인사이트를 HTML 메일로 Gmail 발송 |
 
@@ -30,9 +31,15 @@ python server.py
 2. https://myaccount.google.com/apppasswords 에서 **앱 비밀번호**(16자) 생성
 3. `GMAIL_ADDRESS`, `GMAIL_APP_PASSWORD` 입력 → 재실행 시 실제 발송
 
-### 2) 검색 데이터 (네이버 데이터랩)
+### 2) 검색 데이터
+**Google 트렌드**는 별도 키가 필요 없습니다 — `pip install pytrends`만 하면 자동 사용됩니다.
+> ⚠️ pytrends는 **비공식** Google Trends로, 짧은 시간에 여러 번 호출하면 Google이 `429`(요청제한)를 반환합니다.
+> 이 경우 자동으로 **네이버/데모 데이터로 폴백**하며(성공 결과는 30분 캐시), 잠시 후 다시 실데이터가 들어옵니다.
+> 운영 환경에서 안정적인 Google 데이터가 필요하면 SerpApi·DataForSEO 같은 유료 공식 소스로 교체하세요.
+
+**네이버 데이터랩**(선택, 폴백/병합용):
 1. https://developers.naver.com/apps 애플리케이션 등록 → **데이터랩(검색어트렌드)** 추가
-2. `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET` 입력 → 실시간 검색 트렌드 반영
+2. `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET` 입력 → Google과 병합되어 반영
 
 ## 파일 구조
 ```

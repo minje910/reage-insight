@@ -71,12 +71,16 @@ body{
 
 /* ===== Cookie tracker banner ===== */
 .cookie-bar{
-  margin:14px 18px 0;padding:12px 14px;border-radius:14px;font-size:12px;
+  margin:14px 18px 0;padding:12px 14px;border-radius:14px;font-size:12px;line-height:2;
   background:linear-gradient(90deg,rgba(94,234,212,.1),rgba(59,130,246,.08));
-  border:1px solid var(--line);color:var(--muted);display:flex;gap:8px;align-items:center;
+  border:1px solid var(--line);color:var(--muted);
 }
 .cookie-bar b{color:var(--accent)}
-.cookie-bar .k{color:var(--txt)}
+.cookie-bar .k{color:var(--txt);white-space:nowrap;display:inline-block;
+  background:rgba(255,255,255,.05);padding:2px 8px;border-radius:8px;margin:2px 2px}
+.cookie-bar .k sup{color:var(--muted);font-size:9px;margin-left:1px}
+.cookie-bar .k.gk{color:#fdba74;background:rgba(251,146,60,.1)}
+.cookie-bar .legend{display:block;margin-top:6px;font-size:10.5px;color:#fdba74;opacity:.85}
 
 /* ===== Section title ===== */
 .sec-title{padding:22px 18px 6px;display:flex;align-items:baseline;gap:8px}

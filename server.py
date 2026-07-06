@@ -15,6 +15,7 @@ RE:AGE 백엔드 서버
 import os
 import json
 import ssl
+import time
 import smtplib
 import datetime
 from email.mime.text import MIMEText
@@ -135,15 +136,162 @@ def _demo_trends(seed_keyword):
     return out
 
 
+# ---- 간단 TTL 캐시 (pytrends 과다 호출 방지) ----
+_CACHE = {}
+
+
+def _cache_get(key, ttl):
+    v = _CACHE.get(key)
+    if v and (time.time() - v[0]) < ttl:
+        return v[1]
+    return None
+
+
+def _cache_set(key, val):
+    _CACHE[key] = (time.time(), val)
+
+
+def _trendreq():
+    """재시도/백오프/타임아웃이 설정된 pytrends 클라이언트."""
+    from pytrends.request import TrendReq
+    return TrendReq(
+        hl="ko-KR", tz=540,
+        timeout=(4, 14), retries=2, backoff_factor=0.4,
+        requests_args={"headers": {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+        }},
+    )
+
+
+def _google_trends():
+    """Google Trends(pytrends) 그룹별 상대 관심도. 미설치/실패 시 None."""
+    cached = _cache_get("g_groups", 1800)
+    if cached is not None:
+        return cached
+    try:
+        import pytrends  # noqa: F401
+    except ImportError:
+        return None
+    try:
+        pt = _trendreq()
+        # Google Trends는 요청당 키워드 5개까지
+        kws = [g["keywords"][0] for g in TREND_GROUPS[:5]]
+        pt.build_payload(kws, timeframe="today 3-m", geo="KR")
+        df = pt.interest_over_time()
+        if df is None or df.empty:
+            return None
+        out = []
+        for g in TREND_GROUPS[:5]:
+            k = g["keywords"][0]
+            if k in df.columns:
+                out.append({"keyword": g["name"], "score": float(df[k].iloc[-1])})
+        if out:
+            mx = max(x["score"] for x in out) or 1.0
+            for x in out:
+                x["score"] = round(x["score"] / mx * 100, 1)   # 0~100 상대화
+        out.sort(key=lambda x: x["score"], reverse=True)
+        _cache_set("g_groups", out)
+        return out
+    except Exception as e:
+        app.logger.warning("Google Trends 실패: %s", e)
+        return None
+
+
+def _google_related(seed):
+    """Google 급상승 연관검색어. 실패/빈값이 흔해 상위 트렌드 그룹으로 폴백."""
+    if not seed:
+        return None
+    ck = "g_rel:" + seed
+    cached = _cache_get(ck, 1800)
+    if cached is not None:
+        return cached
+    try:
+        import pytrends  # noqa: F401
+    except ImportError:
+        return None
+    try:
+        pt = _trendreq()
+        pt.build_payload([seed], timeframe="today 12-m", geo="KR")
+        rq = pt.related_queries()
+        d = rq.get(seed) or {}
+        out = []
+        for kind in ("rising", "top"):
+            frame = d.get(kind)
+            if frame is not None and not frame.empty:
+                for _, row in frame.head(6).iterrows():
+                    try:
+                        sc = int(row.get("value"))
+                    except Exception:
+                        sc = 100
+                    out.append({"query": str(row["query"]), "score": min(100, sc), "src": "google"})
+            if out:
+                break
+        _cache_set(ck, out)
+        return out or None
+    except Exception as e:
+        app.logger.warning("Google related 실패: %s", e)
+        return None
+
+
+def _merge_group_scores(*lists):
+    m = {}
+    for lst in lists:
+        if not lst:
+            continue
+        for it in lst:
+            m.setdefault(it["keyword"], []).append(it["score"])
+    out = [{"keyword": k, "score": round(sum(v) / len(v), 1)} for k, v in m.items()]
+    out.sort(key=lambda x: x["score"], reverse=True)
+    return out
+
+
+def _demo_related(seed):
+    seed = (seed or "").strip()
+    if not seed:
+        return [{"query": g["name"], "score": 90 - i * 8, "src": "demo"}
+                for i, g in enumerate(TREND_GROUPS[:4])]
+    mods = ["비용", "효과", "후기", "병원"]
+    return [{"query": seed + " " + m, "score": 100 - i * 15, "src": "demo"}
+            for i, m in enumerate(mods)]
+
+
 @app.route("/api/trends")
 def api_trends():
     keyword = request.args.get("keyword", "")
-    data = _naver_datalab(keyword)
-    source = "naver_datalab"
-    if data is None:
-        data = _demo_trends(keyword)
-        source = "demo"
-    return jsonify({"source": source, "keyword": keyword, "trends": data})
+    naver = _naver_datalab(keyword)
+    google = _google_trends()
+
+    trends = _merge_group_scores(naver, google)
+    sources = []
+    if google:
+        sources.append("google")
+    if naver:
+        sources.append("naver")
+    if not trends:
+        trends = _demo_trends(keyword)
+        sources = ["demo"]
+
+    # 쿠키에 주입할 연관 키워드
+    related = _google_related(keyword)
+    rel_src = "google_related"
+    if not related:
+        if google:
+            # Google 급상승 상위 그룹을 연관 키워드로 사용
+            related = [{"query": g["keyword"], "score": g["score"], "src": "google_trend"}
+                       for g in google[:4]]
+            rel_src = "google_trend"
+        else:
+            related = _demo_related(keyword)
+            rel_src = "demo"
+
+    return jsonify({
+        "source": "+".join(sources) or "demo",
+        "relatedSource": rel_src,
+        "keyword": keyword,
+        "trends": trends,
+        "related": related,
+    })
 
 
 # ============================================================

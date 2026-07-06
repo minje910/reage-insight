@@ -8,9 +8,11 @@
 
 const STORE_KEY = 'ra_profile';
 const COOKIE_KEY = 'ra_search_cookie';
+const GTERMS_KEY = 'ra_google_terms';   // Google 검색통계로 자동 주입된 키워드
 
 let profile = null;
 let searchCookie = {};
+let googleTerms = new Set();  // 🔎 Google 급상승에서 쿠키로 들어온 키워드
 let trendWeights = {};      // { cardId: boostScore }
 let onboarding = { wealth: null };
 
@@ -73,8 +75,11 @@ function classifyPersona(age) {
 function loadCookie() {
   try { searchCookie = JSON.parse(localStorage.getItem(COOKIE_KEY)) || {}; }
   catch { searchCookie = {}; }
+  try { googleTerms = new Set(JSON.parse(localStorage.getItem(GTERMS_KEY)) || []); }
+  catch { googleTerms = new Set(); }
 }
 function saveCookie() { localStorage.setItem(COOKIE_KEY, JSON.stringify(searchCookie)); }
+function saveGoogleTerms() { localStorage.setItem(GTERMS_KEY, JSON.stringify([...googleTerms])); }
 function addSearch(term) {
   const t = term.trim().toLowerCase();
   if (!t) return;
@@ -82,8 +87,23 @@ function addSearch(term) {
   saveCookie();
 }
 
+/* Google 검색통계 연관 키워드를 쿠키에 주입 (중복은 1회만) */
+function mergeRelatedIntoCookie(related) {
+  if (!Array.isArray(related)) return 0;
+  let added = 0;
+  related.slice(0, 5).forEach((r) => {
+    const t = (r.query || '').toLowerCase().trim();
+    if (!t || googleTerms.has(t)) return;
+    searchCookie[t] = (searchCookie[t] || 0) + 1;
+    googleTerms.add(t);
+    added++;
+  });
+  if (added) { saveCookie(); saveGoogleTerms(); }
+  return added;
+}
+
 /* ============================================================ 4. 검색 데이터 API */
-async function fetchTrends(keyword) {
+async function fetchTrends(keyword, inject) {
   try {
     const res = await fetch('/api/trends?keyword=' + encodeURIComponent(keyword || ''));
     if (!res.ok) throw new Error('bad');
@@ -94,24 +114,27 @@ async function fetchTrends(keyword) {
       if (id) trendWeights[id] = t.score;   // 0~100
     });
     renderTrendStrip(data);
-    return data;
+    let added = 0;
+    if (inject) added = mergeRelatedIntoCookie(data.related);
+    return { data, added };
   } catch (e) {
     // 백엔드 미실행(정적 파일로 열람) 시 조용히 스킵
     $('#trend-strip').style.display = 'none';
-    return null;
+    return { data: null, added: 0 };
   }
 }
 
+const SRC_LABEL = { google: 'Google 트렌드', naver: '네이버 데이터랩', demo: '데모 데이터' };
 function renderTrendStrip(data) {
   const strip = $('#trend-strip');
   const top = (data.trends || []).slice(0, 5);
   if (!top.length) { strip.style.display = 'none'; return; }
-  const src = data.source === 'naver_datalab' ? '네이버 데이터랩' : '데모 데이터';
+  const label = (data.source || 'demo').split('+').map((s) => SRC_LABEL[s] || s).join(' + ');
   strip.style.display = 'block';
   strip.innerHTML =
-    `<div class="trend-head">🔥 실시간 검색 급상승 <small>(${src})</small></div>` +
+    `<div class="trend-head">🔥 실시간 검색 급상승 <small>(${label})</small></div>` +
     `<div class="trend-items">` +
-    top.map((t) => `<span class="trend-pill">${t.keyword}<b>${t.score}</b></span>`).join('') +
+    top.map((t) => `<span class="trend-pill">${t.keyword}<b>${Math.round(t.score)}</b></span>`).join('') +
     `</div>`;
 }
 
@@ -164,7 +187,7 @@ function showApp() {
   renderProfileChip();
   renderCookieBar();
   renderChips();
-  fetchTrends('').then(renderInsight);   // 최초 진입 시 트렌드 로드 후 인사이트
+  fetchTrends('', false).then(renderInsight);   // 최초 진입: 트렌드 로드(쿠키 주입 없음) 후 인사이트
   bindSearch();
   bindEmail();
 }
@@ -183,8 +206,13 @@ function renderCookieBar() {
     bar.innerHTML = `🍪 <span>아직 검색 기록이 없어요. <b>검색하기</b>로 관심사를 알려주시면 인사이트가 정교해져요.</span>`;
     return;
   }
-  const kws = entries.map(([k, v]) => `<span class="k">${k}<sup>×${v}</sup></span>`).join(' · ');
-  bar.innerHTML = `🍪 <b>검색 쿠키</b> 기반 &nbsp; ${kws}`;
+  const kws = entries.map(([k, v]) => {
+    const g = googleTerms.has(k);
+    return `<span class="k${g ? ' gk' : ''}">${g ? '🔎' : ''}${k}<sup>×${v}</sup></span>`;
+  }).join(' · ');
+  const hasG = entries.some(([k]) => googleTerms.has(k));
+  const legend = hasG ? ` <span class="legend">🔎 = Google 검색통계 자동반영</span>` : '';
+  bar.innerHTML = `🍪 <b>검색 쿠키</b> 기반 &nbsp; ${kws}${legend}`;
 }
 
 function renderChips() {
@@ -241,10 +269,12 @@ async function runSearch(term) {
   if (!term) return;
   addSearch(term);
   $('#search-input').value = '';
+  const { added } = await fetchTrends(term, true);   // 검색 데이터 API 갱신 + Google 연관 쿠키 주입
   renderCookieBar();
-  await fetchTrends(term);     // 검색 데이터 API 갱신
   renderInsight();
-  toast(`🍪 "${term}" 검색 누적 · 인사이트 갱신`);
+  let msg = `🍪 "${term}" 검색 누적`;
+  if (added) msg += ` · 🔎 Google 급상승 ${added}개 쿠키 반영`;
+  toast(msg);
   $('#insight').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -313,6 +343,7 @@ function resetAll() {
   if (!confirm('가입 정보와 검색 쿠키를 모두 초기화할까요?')) return;
   localStorage.removeItem(STORE_KEY);
   localStorage.removeItem(COOKIE_KEY);
+  localStorage.removeItem(GTERMS_KEY);
   location.reload();
 }
 

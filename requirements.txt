@@ -1,2 +1,3 @@
 flask>=3.0
 requests>=2.31
+pytrends>=4.9   # Google 트렌드 (비공식, 키 불필요)
